@@ -35,7 +35,7 @@ function activateWord(activated) {
     } else {
       context.fillText('Game over!',width/2, height/2);
       $(words).each(function(i, val) {
-        $("#wordsSeen").append(`<a href="http://dictionary.cambridge.org/us/dictionary/english/${val}" target="_blank">${val}</a> `);
+        $("#wordsSeen").append(`<a href="http://dictionary.cambridge.org/us/dictionary/english/${val}" target="_blank">${val}</a><br /> `);
         clearInterval(metadata.slideDown);
       });
     }

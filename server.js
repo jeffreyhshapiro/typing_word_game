@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const randomWord = require('random-word');
+const defineWord = require('define-word');
 const PORT = 3000;
 
 app.use(express.static('logic'));
@@ -11,8 +12,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/word', (req, res) => {
+  let rWord = randomWord();
+  let definition = defineWord.define(rWord);
   res.json({
-    word: randomWord()
+    word: rWord,
+    definition, definition
   })
 })
 
