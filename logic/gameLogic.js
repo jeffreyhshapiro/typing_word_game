@@ -4,7 +4,8 @@ const height = c.height;
 const width = c.width;
 let dHeight = 0;
 let dWidth = 0;
-let self = this;
+let metadata = {};
+metadata.j = 0;
 
 const words = "hand,wrong,late,fang,clip,rub,perfect,private,guitar,grape,quaint,stupid";
 
@@ -25,15 +26,16 @@ function newWord(word) {
 function activateWord(activated) {
   context.font="20px Arial";
   context.fillStyle = "#000000";
-  self.slideDown = setInterval(() => {
+  metadata.slideDown = setInterval(() => {
     context.clearRect(0, 0, width, height);
     if (dHeight < height) {
-      dHeight += 1;
+      dHeight += metadata.j;
       context.fillText(activated,width/2, dHeight);
     } else {
       context.fillText('Game over!',width/2, height/2);
     }
-  }, 20)
+  }, 20);
+  metadata.j++
 }
 
 function attachKeyPress(word) {
@@ -60,7 +62,7 @@ function getNewWord() {
 function wordChoice() {
   context.clearRect(0, 0, width, height);
   dHeight = 0;
-  clearInterval(self.slideDown);
+  clearInterval(metadata.slideDown);
   new newWord(chooseWord());
 }
 
