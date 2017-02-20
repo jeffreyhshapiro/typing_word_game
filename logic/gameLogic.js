@@ -33,14 +33,15 @@ function activateWord(activated) {
       dHeight += metadata.j;
       context.fillText(activated,width/2, dHeight);
     } else {
+      clearInterval(metadata.slideDown);
       context.fillText('Game over!',width/2, height/2);
       $(words).each(function(i, val) {
-        $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="http://dictionary.cambridge.org/us/dictionary/english/${val.word}" target="_blank">${val.word}</a></div>`);
-        clearInterval(metadata.slideDown);
+        $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="#">${val.word}</a></div>`);
       });
       $(".definition").click(function() {
         var def = $(this).attr('data-definition');
-        $(".definition").text(`<div>${words[def].definition.definitions[0]}</div>`)
+        $(".wordDefinition").empty();
+        $(".wordDefinition").prepend(`<div> Word: ${words[def].word}  <br /> ${words[def].definition.definitions[0]}</div>`)
       })
     }
   }, 20);
@@ -49,7 +50,7 @@ function activateWord(activated) {
 
 function attachKeyPress(word) {
   let i = 0;
-  $(document).keypress((e) => {
+  $('body').keypress((e) => {
     if (e.keyCode === word.charCodeAt(i)) {
       $("#lettersTyped").append(word[i]);
       i++
