@@ -5,10 +5,22 @@
     <title></title>
   </head>
   <body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link rel="stylesheet" href="./index.css">
-    <canvas id="typingGame" width="800" height="700" align="center"></canvas>
-    <div id="lettersTyped"></div>
-    <div id="wordsSeen"></div>
+    <div class="row">
+      <div class="eight columns">
+        <canvas id="typingGame" width="800" height="700" align="center"></canvas>
+      </div>
+      <div class="four columns">
+        <div id="lettersTyped"></div>
+        <div id="wordsSeen">
+
+          <div class="definition">
+            
+          </div>
+        </div>
+      </div>
+    </div>
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
       integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="

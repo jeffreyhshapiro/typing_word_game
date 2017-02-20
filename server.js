@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const randomWord = require('random-word');
+const randomWord = require('random-words');
 const defineWord = require('define-word');
 const PORT = 3000;
 

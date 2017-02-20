@@ -12,16 +12,16 @@ function randomWord() {
   $.ajax({
     url: '/word',
     success: (res) => {
-      wordChoice(res.word)
+      wordChoice(res)
     }
   });
 }
 
 function newWord(word) {
-  this.word = word;
+  this.word = word.word;
   activateWord(this.word);
   attachKeyPress(this.word);
-  wordsSeen(this.word);
+  wordsSeen(word);
 }
 
 function activateWord(activated) {
@@ -35,9 +35,13 @@ function activateWord(activated) {
     } else {
       context.fillText('Game over!',width/2, height/2);
       $(words).each(function(i, val) {
-        $("#wordsSeen").append(`<a href="http://dictionary.cambridge.org/us/dictionary/english/${val}" target="_blank">${val}</a><br /> `);
+        $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="http://dictionary.cambridge.org/us/dictionary/english/${val.word}" target="_blank">${val.word}</a></div>`);
         clearInterval(metadata.slideDown);
       });
+      $(".definition").click(function() {
+        var def = $(this).attr('data-definition');
+        $(".definition").text(`<div>${words[def].definition.definitions[0]}</div>`)
+      })
     }
   }, 20);
   metadata.j++
