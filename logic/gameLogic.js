@@ -1,8 +1,8 @@
-
-
 let gameLogic = (function($, window, document) {
   const c = document.getElementById('typingGame');
   const context = c.getContext('2d');
+  context.canvas.height = window.innerHeight;
+  context.canvas.width = window.innerWidth > 800 ? 800 : window.innerWidth * .7;
   const height = c.height;
   const width = c.width;
   let dHeight = 0;
@@ -41,12 +41,12 @@ let gameLogic = (function($, window, document) {
           clearInterval(metadata.slideDown);
           context.fillText('Game over!',width/2, height/2);
           $(gameLogic.words).each(function(i, val) {
-            $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="#">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
+            $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
           $(".definition").click(function() {
             var def = $(this).attr('data-definition');
             $(".wordDefinition").empty();
-            $(".wordDefinition").prepend(`<div> Word: ${words[def].word}  <br /> ${words[def].definition.definitions[0]}</div>`)
+            $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
           })
         }
       }, 20);
