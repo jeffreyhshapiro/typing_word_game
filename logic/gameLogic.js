@@ -9,6 +9,7 @@ let gameLogic = (function($, window, document) {
   let dWidth = 0;
   let metadata = {};
   let timing = {};
+  metadata.wordcount = 0;
   metadata.j = 0;
 
   return {
@@ -40,7 +41,7 @@ let gameLogic = (function($, window, document) {
           clearInterval(metadata.slideDown);
           context.fillText('Game over!',width/2, height/2);
           $(gameLogic.words).each(function(i, val) {
-            $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="#">${val.word}</a>  ${val.totalTime} </div>`);
+            $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="#">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
           $(".definition").click(function() {
             var def = $(this).attr('data-definition');
@@ -66,8 +67,9 @@ let gameLogic = (function($, window, document) {
         $("#lettersTyped").append("\n");
         timing.end = analytics.endTime();
         let totalTime = analytics.calculateTotalTime(timing.start, timing.end);
-        
+        gameLogic.words[metadata.wordcount].totalTime = totalTime;
         gameLogic.randomWord();
+        metadata.wordcount++
       }
     },
     wordChoice: (word) => {
