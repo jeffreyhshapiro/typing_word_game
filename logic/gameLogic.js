@@ -43,24 +43,16 @@ let gameLogic = (function($, window, document) {
           $(gameLogic.words).each(function(i, val) {
             $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
+
           $(".definition").click(function() {
             var def = $(this).attr('data-definition');
             $(".wordDefinition").empty();
             $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
           });
+          
           $(".restart").html("<button class='restartGame'>Restart</button>");
           $(".restartGame").click(function(){
-            dHeight = 0;
-            metadata.j = 0;
-            $('#lettersTyped').empty();
-            $('#wordsSeen').empty();
-            $('#definition').empty();
-            $('#wordDefinition').empty();
-            $('.restart').empty();
-            gameLogic.words = [];
-            metadata.wordcount = 0;
-            $('body').off('keypress');
-            gameLogic.randomWord();
+            gameLogic.restart();
           })
         }
       }, 20);
@@ -94,6 +86,19 @@ let gameLogic = (function($, window, document) {
     },
     wordsSeen: (word) => {
       gameLogic.words.push(word);
+    },
+    restart: () => {
+      dHeight = 0;
+      metadata.j = 0;
+      $('#lettersTyped').empty();
+      $('#wordsSeen').empty();
+      $('#definition').empty();
+      $('#wordDefinition').empty();
+      $('.restart').empty();
+      gameLogic.words = [];
+      metadata.wordcount = 0;
+      $('body').off('keypress');
+      gameLogic.randomWord();
     }
   }
 })($, window, document, undefined)
