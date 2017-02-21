@@ -47,6 +47,20 @@ let gameLogic = (function($, window, document) {
             var def = $(this).attr('data-definition');
             $(".wordDefinition").empty();
             $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
+          });
+          $(".restart").html("<button class='restartGame'>Restart</button>");
+          $(".restartGame").click(function(){
+            dHeight = 0;
+            metadata.j = 0;
+            $('#lettersTyped').empty();
+            $('#wordsSeen').empty();
+            $('#definition').empty();
+            $('#wordDefinition').empty();
+            $('.restart').empty();
+            gameLogic.words = [];
+            metadata.wordcount = 0;
+            $('body').off('keypress');
+            gameLogic.randomWord();
           })
         }
       }, 20);
