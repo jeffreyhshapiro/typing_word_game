@@ -2,11 +2,22 @@ const express = require('express');
 const app = express();
 const randomWord = require('random-words');
 const defineWord = require('define-word');
-const morgan = require('morgan');
+const Sequelize = require('sequelize');
+const wordTimes = require('./models/word_times.js');
+require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static('logic'));
 app.use(express.static('css'));
+
+let sequelize = new Sequelize('typefall', process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: 'localhost',
+  dialect: 'postgres',
+}).authenticate().then(() => {
+  console.log('successful')
+}).catch((err) => {
+  console.log(`Unable to connect to database: ${err}`);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -23,6 +34,12 @@ app.get('/word', (req, res) => {
   res.json(wordsArr);
 });
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+app.post('/saveWordData', (req, res) => {
+  console.log('right herrrrrr');
+})
+
+wordTimes.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
+})

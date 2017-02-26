@@ -1,4 +1,4 @@
-var analytics = (function($){
+let analytics = (function($){
   return {
     startTime: () => {
         return +new Date()
