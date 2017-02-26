@@ -18,7 +18,11 @@ let gameLogic = (function($, window, document) {
       $.ajax({
         url: '/word',
         success: (res) => {
-          gameLogic.wordChoice(res)
+          metadata.res = res;
+          $(metadata.res).each((i, val) => {
+            gameLogic.wordChoice(val);
+            return false;
+          });
         }
       });
     },
@@ -35,9 +39,10 @@ let gameLogic = (function($, window, document) {
       metadata.slideDown = setInterval(() => {
         context.clearRect(0, 0, width, height);
         if (dHeight < height) {
-          dHeight += metadata.j;
+          dHeight += metadata.j / 2;
           context.fillText(activated,width/2, dHeight);
         } else {
+          $('body').off('keypress');
           clearInterval(metadata.slideDown);
           context.fillText('Game over!',width/2, height/2);
           $(gameLogic.words).each(function(i, val) {
@@ -49,11 +54,11 @@ let gameLogic = (function($, window, document) {
             $(".wordDefinition").empty();
             $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
           });
-          
+
           $(".restart").html("<button class='restartGame'>Restart</button>");
           $(".restartGame").click(function(){
             gameLogic.restart();
-          })
+          });
         }
       }, 20);
       metadata.j++
@@ -74,8 +79,9 @@ let gameLogic = (function($, window, document) {
         timing.end = analytics.endTime();
         let totalTime = analytics.calculateTotalTime(timing.start, timing.end);
         gameLogic.words[metadata.wordcount].totalTime = totalTime;
-        gameLogic.randomWord();
         metadata.wordcount++
+        let nextWord = metadata.res[metadata.wordcount];
+        gameLogic.wordChoice(nextWord);
       }
     },
     wordChoice: (word) => {
@@ -93,11 +99,10 @@ let gameLogic = (function($, window, document) {
       $('#lettersTyped').empty();
       $('#wordsSeen').empty();
       $('#definition').empty();
-      $('#wordDefinition').empty();
+      $('.wordDefinition').empty();
       $('.restart').empty();
       gameLogic.words = [];
       metadata.wordcount = 0;
-      $('body').off('keypress');
       gameLogic.randomWord();
     }
   }

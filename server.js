@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const randomWord = require('random-words');
 const defineWord = require('define-word');
+const morgan = require('morgan');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static('logic'));
@@ -12,12 +13,14 @@ app.get('/', (req, res) => {
 });
 
 app.get('/word', (req, res) => {
-  let rWord = randomWord();
-  let definition = defineWord.define(rWord);
-  res.json({
-    word: rWord,
-    definition, definition
+  let rWord = randomWord(30);
+  let wordsArr = rWord.map((word)=> {
+    return {
+      word: word,
+      definition: defineWord.define(word)
+    }
   });
+  res.json(wordsArr);
 });
 
 app.listen(PORT, () => {
