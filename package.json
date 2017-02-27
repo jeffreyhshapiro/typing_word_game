@@ -9,6 +9,7 @@
   "author": "Jeff Shapiro",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.16.1",
     "define-word": "^1.0.5",
     "dotenv": "^4.0.0",
     "express": "^4.14.1",

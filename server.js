@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const bp = require('body-parser');
 const randomWord = require('random-words');
 const defineWord = require('define-word');
 const Sequelize = require('sequelize');
@@ -10,14 +11,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('logic'));
 app.use(express.static('css'));
 
-// let sequelize = new Sequelize('typefall', process.env.DB_USERNAME, process.env.DB_PASSWORD, {
-//   host: 'localhost',
-//   dialect: 'postgres',
-// }).authenticate().then(() => {
-//   console.log('successful')
-// }).catch((err) => {
-//   console.log(`Unable to connect to database: ${err}`);
-// });
+app.use(bp.urlencoded({ extended: false }))
+app.use(bp.json())
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -36,6 +31,7 @@ app.get('/word', (req, res) => {
 
 app.post('/saveWordData', (req, res) => {
   console.log('right herrrrrr');
+  console.log(req.body)
 });
 
 models.sequelize.sync().then(() => {

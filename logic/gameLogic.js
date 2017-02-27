@@ -49,6 +49,8 @@ let gameLogic = (function($, window, document) {
             $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
 
+          gameLogic.saveWordData(gameLogic.words);
+
           $(".definition").click(function() {
             var def = $(this).attr('data-definition');
             $(".wordDefinition").empty();
@@ -104,6 +106,10 @@ let gameLogic = (function($, window, document) {
       gameLogic.words = [];
       metadata.wordcount = 0;
       gameLogic.randomWord();
+    },
+    saveWordData: (wordData) => {
+      console.log(wordData)
+      db.saveRound(wordData);
     }
   }
 })($, window, document, undefined)
