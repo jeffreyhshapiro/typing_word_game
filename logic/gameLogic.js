@@ -48,7 +48,7 @@ let gameLogic = (function($, window, document) {
           $(gameLogic.words).each(function(i, val) {
             $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
-
+          
           gameLogic.saveWordData(gameLogic.words);
 
           $(".definition").click(function() {
@@ -108,7 +108,6 @@ let gameLogic = (function($, window, document) {
       gameLogic.randomWord();
     },
     saveWordData: (wordData) => {
-      console.log(wordData)
       db.saveRound(wordData);
     }
   }

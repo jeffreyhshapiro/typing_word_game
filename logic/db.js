@@ -2,7 +2,6 @@ let db = (function($) {
 
   return {
     saveRound: (wordData) => {
-      console.log('herrrr')
       console.log(wordData)
       $.ajax({
         type: "POST",

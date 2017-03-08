@@ -19,19 +19,29 @@ app.get('/', (req, res) => {
 });
 
 app.get('/word', (req, res) => {
-  let rWord = randomWord(30);
-  let wordsArr = rWord.map((word)=> {
-    return {
-      word: word,
-      definition: defineWord.define(word)
+  let rWord = randomWord(25);
+  new Promise((resolve, reject) => {
+    if (rWord) {
+      resolve(rWord);
+    } else {
+      reject('No words!');
     }
+  }).then((words) => {
+    return words.map((word) => {
+      return {
+        word: word,
+        definition: defineWord.define(word)
+      }
+    })
+  }).then((wordsArr) => {
+    res.json(wordsArr);
   });
-  res.json(wordsArr);
 });
 
 app.post('/saveWordData', (req, res) => {
-  console.log('right herrrrrr');
+  let wordData = req.body;
   console.log(req.body)
+
 });
 
 models.sequelize.sync().then(() => {

@@ -10,4 +10,4 @@ let analytics = (function($){
       return end - start
     }
   }
-})($)
+})($);
