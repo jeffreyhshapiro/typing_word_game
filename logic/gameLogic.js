@@ -26,10 +26,15 @@ let gameLogic = (function($, window, document) {
         }
       });
     },
+    wordChoice: (word) => {
+      context.clearRect(0, 0, width, height);
+      dHeight = 0;
+      clearInterval(metadata.slideDown);
+      gameLogic.newWord(word);
+    },
     newWord: (word) => {
-      this.word = word.word;
-      gameLogic.activateWord(this.word);
-      gameLogic.attachKeyPress(this.word);
+      gameLogic.activateWord(word.word);
+      gameLogic.attachKeyPress(word.word);
       gameLogic.wordsSeen(word);
     },
     activateWord: (activated) => {
@@ -42,13 +47,14 @@ let gameLogic = (function($, window, document) {
           dHeight += metadata.j / 2;
           context.fillText(activated,width/2, dHeight);
         } else {
+          //the game is over
           $('body').off('keypress');
           clearInterval(metadata.slideDown);
           context.fillText('Game over!',width/2, height/2);
           $(gameLogic.words).each(function(i, val) {
             $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
           });
-          
+
           gameLogic.saveWordData(gameLogic.words);
 
           $(".definition").click(function() {
@@ -75,9 +81,12 @@ let gameLogic = (function($, window, document) {
         }
       });
     },
+    wordsSeen: (word) => {
+      gameLogic.words.push(word);
+    },
     checkForCompletion: (i, word) => {
       if (i === word.length) {
-        $("#lettersTyped").append("\n");
+        $("#lettersTyped").empty();
         timing.end = analytics.endTime();
         let totalTime = analytics.calculateTotalTime(timing.start, timing.end);
         gameLogic.words[metadata.wordcount].totalTime = totalTime;
@@ -85,15 +94,6 @@ let gameLogic = (function($, window, document) {
         let nextWord = metadata.res[metadata.wordcount];
         gameLogic.wordChoice(nextWord);
       }
-    },
-    wordChoice: (word) => {
-      context.clearRect(0, 0, width, height);
-      dHeight = 0;
-      clearInterval(metadata.slideDown);
-      gameLogic.newWord(word);
-    },
-    wordsSeen: (word) => {
-      gameLogic.words.push(word);
     },
     restart: () => {
       dHeight = 0;
@@ -112,5 +112,3 @@ let gameLogic = (function($, window, document) {
     }
   }
 })($, window, document, undefined)
-
-gameLogic.randomWord();
