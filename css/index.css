@@ -6,3 +6,7 @@
 body {
   background-color: grey;
 }
+
+#lettersTyped {
+  font-size: 2em;
+}
