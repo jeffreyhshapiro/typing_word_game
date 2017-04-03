@@ -44,7 +44,12 @@ app.post('/saveWordData', (req, res) => {
 
 });
 
-models.sequelize.sync().then(() => {
+// models.sequelize.sync().then(() => {
+//   app.listen(PORT, () => {
+//     console.log(`Listening on port ${PORT}`);
+//   });
+// });
+models.sequelize.sync({force: true}).then(() => {
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
