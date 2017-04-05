@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const bp = require('body-parser');
-const randomWord = require('random-words');
-const defineWord = require('define-word');
+const wd = require('word-definition');
 const Sequelize = require('sequelize');
 const models = require('./models');
 require('dotenv').config();
@@ -38,9 +37,15 @@ app.get('/word', (req, res) => {
   });
 });
 
+app.get('/defineWord', (req, res) => {
+  let word = req.query.word;
+  wd.getDef(word, 'en', null, (def) => {
+    res.json({def: def.definition});
+  })
+})
+
 app.post('/saveWordData', (req, res) => {
   let wordData = req.body;
-  console.log(req.body)
 });
 
 models.sequelize.sync().then(() => {
