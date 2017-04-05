@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.static('logic'));
 app.use(express.static('css'));
+app.use(express.static('emoji'));
 
 app.use(bp.urlencoded({ extended: false }))
 app.use(bp.json())

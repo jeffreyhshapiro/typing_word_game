@@ -15,7 +15,11 @@ let db = (function($) {
         type: "GET",
         url: `/defineWord?word=${word}`,
         success: (res) => {
-          gameLogic.words[j].def = res.def;
+          if (!!res.def) {
+            gameLogic.words[j].def = res.def;
+          } else {
+            gameLogic.words[j].def = `We currently don't have a definition for ${gameLogic.words[j].word}, but we will have one soon! ${db.emojis['100']} ${db.emojis['curry']} ${db.emojis['v']}`;
+          }
         }
       })
     }

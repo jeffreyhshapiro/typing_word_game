@@ -65,7 +65,7 @@ let gameLogic = (function($, window, document) {
           $(".definition").click(function() {
             var index = $(this).attr('data-definition');
             $(".wordDefinition").empty();
-            $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[index].word}  <br /> ${gameLogic.words[index].def}</div>`);
+            $(".wordDefinition").prepend(`<div> <h2>${gameLogic.words[index].word}</h2> ${gameLogic.words[index].def}</div>`);
           });
 
           $(".restart").html("<button class='restartGame'>Restart</button>");
@@ -100,7 +100,7 @@ let gameLogic = (function($, window, document) {
         metadata.wordcount++
         let nextWord = metadata.res[metadata.wordcount];
 
-        db.wordDefinition(word, metadata.wordcount);
+        db.wordDefinition(word, metadata.wordcount - 1);
 
         gameLogic.wordChoice(nextWord);
       }
