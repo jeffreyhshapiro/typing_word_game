@@ -63,12 +63,12 @@ let gameLogic = (function($, window, document) {
           gameLogic.saveWordData(gameLogic.words);
 
           $(".definition").click(function() {
-            var def = $(this).attr('data-definition');
+            var index = $(this).attr('data-definition');
             $(".wordDefinition").empty();
-            $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
+            $(".wordDefinition").prepend(`<div> <h2>${gameLogic.words[index].word}</h2> ${gameLogic.words[index].def}</div>`);
           });
 
-          $(".restart").html("<button class='restartGame'>Restart</button>");
+          $(".restart").html("<button class='restartGame button-primary'>Restart</button>");
           $(".restartGame").click(function(){
             gameLogic.restart();
           });
@@ -99,6 +99,9 @@ let gameLogic = (function($, window, document) {
         gameLogic.words[metadata.wordcount].totalTime = totalTime;
         metadata.wordcount++
         let nextWord = metadata.res[metadata.wordcount];
+
+        db.wordDefinition(word, metadata.wordcount - 1);
+
         gameLogic.wordChoice(nextWord);
       }
     },
