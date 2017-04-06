@@ -8,6 +8,9 @@ let analytics = (function($){
     },
     calculateTotalTime: (start, end) => {
       return end - start
+    },
+    typo: (typoInfo) => {
+      console.log(typoInfo);
     }
   }
 })($);

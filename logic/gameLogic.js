@@ -56,8 +56,12 @@ let gameLogic = (function($, window, document) {
           $('body').off('keypress');
           clearInterval(metadata.slideDown);
           context.fillText('Game over!',width/2, height/2);
+
+          //less that optimal hack, but the game should only show words that the user completed in the words array
+          gameLogic.words.pop()
+
           $(gameLogic.words).each(function(i, val) {
-            $("#wordsSeen").append(`<div class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</a>  ${val.totalTime / 1000}s </div>`);
+            $("#wordsSeen").append(`<tr><td class='definition' data-definition=${i}><a href="javascript:void(0);">${val.word}</td>  <td>${val.totalTime / 1000}s </td></tr>`);
           });
 
           gameLogic.saveWordData(gameLogic.words);
@@ -84,6 +88,15 @@ let gameLogic = (function($, window, document) {
           $("#lettersTyped").append(word[i]);
           i++
           gameLogic.checkForCompletion(i, word)
+        } else {
+          let typoInfo = {
+            letterPressed: String.fromCharCode(e.keyCode),
+            correctLetter: word[i],
+            letterIndex: i,
+            typoWord: word,
+            wordNumber: gameLogic.words.length
+          }
+          analytics.typo(typoInfo)
         }
       });
     },
@@ -101,6 +114,8 @@ let gameLogic = (function($, window, document) {
         let nextWord = metadata.res[metadata.wordcount];
 
         db.wordDefinition(word, metadata.wordcount - 1);
+
+        $('body').off('keypress');
 
         gameLogic.wordChoice(nextWord);
       }
