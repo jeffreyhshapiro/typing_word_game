@@ -10,3 +10,8 @@ body {
 #lettersTyped {
   font-size: 2em;
 }
+
+.startGame {
+  position: absolute;
+  top: 50%;
+}

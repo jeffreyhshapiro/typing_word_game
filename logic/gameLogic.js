@@ -68,7 +68,7 @@ let gameLogic = (function($, window, document) {
             $(".wordDefinition").prepend(`<div> <h2>${gameLogic.words[index].word}</h2> ${gameLogic.words[index].def}</div>`);
           });
 
-          $(".restart").html("<button class='restartGame'>Restart</button>");
+          $(".restart").html("<button class='restartGame button-primary'>Restart</button>");
           $(".restartGame").click(function(){
             gameLogic.restart();
           });

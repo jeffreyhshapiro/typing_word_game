@@ -1,6 +1,9 @@
 let main = (function($, window, document){
 
   //fire the game
-  gameLogic.randomWord();
+  $('.startGame').click(() => {
+    $('.startGame').hide();
+    gameLogic.randomWord();
+  });
 
 })($, window, document, undefined);
