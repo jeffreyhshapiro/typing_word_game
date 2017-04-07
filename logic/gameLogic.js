@@ -11,6 +11,7 @@ let gameLogic = (function($, window, document) {
   let timing = {};
   metadata.wordcount = 0;
   metadata.j = 0;
+  metadata.typo = [];
 
   return {
     words: [],
@@ -94,9 +95,10 @@ let gameLogic = (function($, window, document) {
             correctLetter: word[i],
             letterIndex: i,
             typoWord: word,
-            wordNumber: gameLogic.words.length
+            wordNumber: gameLogic.words.length,
+            word_id: gameLogic.words[metadata.wordcount].id
           }
-          analytics.typo(typoInfo)
+          analytics.typo(typoInfo);
         }
       });
     },

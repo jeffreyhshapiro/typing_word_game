@@ -10,7 +10,14 @@ let analytics = (function($){
       return end - start
     },
     typo: (typoInfo) => {
-      console.log(typoInfo);
+      $.ajax({
+        type: "POST",
+        data: typoInfo,
+        url: "/typo",
+        success: () => {
+          console.log('ayo')
+        }
+      })
     }
   }
 })($);
