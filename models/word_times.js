@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     speed: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false
     }
   });

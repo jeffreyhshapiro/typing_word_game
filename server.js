@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const os = require('os');
 const bp = require('body-parser');
 const wd = require('word-definition');
 const Sequelize = require('sequelize');
@@ -25,8 +26,18 @@ app.use(bp.json());
 app.get('/', (req, res) => {
   models.game_session.build({
     sid: req.sessionID
-  }).save().then(() => {
-    res.sendFile(__dirname + '/index.html');
+  }).save().then((data) => {
+    let options = {
+      "root": __dirname,
+      headers: {
+        "x-sid": data.id
+      }
+    }
+    res.sendFile('/index.html', options, (err) => {
+      if (err) {
+        res.send(err)
+      }
+    });
   }).catch((e) => {
     res.send(`Unfortunately, Typefall has fallen- please check back later!`);
   });
