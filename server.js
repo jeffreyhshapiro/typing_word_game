@@ -6,7 +6,7 @@ const defineWord = require('define-word');
 const Sequelize = require('sequelize');
 const models = require('./models');
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.static('logic'));
 app.use(express.static('css'));
