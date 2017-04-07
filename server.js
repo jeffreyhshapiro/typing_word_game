@@ -23,12 +23,13 @@ app.use(bp.urlencoded({ extended: false }));
 app.use(bp.json());
 
 app.get('/', (req, res) => {
-  // console.log(req.sessionID);
-  // let ip = req.header('x-forwarded-for') || req.connection.remoteAddress;
-  // console.log(ip)
-  // return
-
-  res.sendFile(__dirname + '/index.html');
+  models.game_session.build({
+    sid: req.sessionID
+  }).save().then(() => {
+    res.sendFile(__dirname + '/index.html');
+  }).catch((e) => {
+    res.send(`Unfortunately, Typefall has fallen- please check back later!`);
+  });
 });
 
 app.get('/word', (req, res) => {
