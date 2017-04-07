@@ -1,8 +1,7 @@
 const express = require('express');
 const app = express();
 const bp = require('body-parser');
-const randomWord = require('random-words');
-const defineWord = require('define-word');
+const wd = require('word-definition');
 const Sequelize = require('sequelize');
 const models = require('./models');
 require('dotenv').config();
@@ -10,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.static('logic'));
 app.use(express.static('css'));
+app.use(express.static('emoji'));
 
 app.use(bp.urlencoded({ extended: false }))
 app.use(bp.json())
@@ -19,29 +19,34 @@ app.get('/', (req, res) => {
 });
 
 app.get('/word', (req, res) => {
-  let rWord = randomWord(25);
-  new Promise((resolve, reject) => {
-    if (rWord) {
-      resolve(rWord);
-    } else {
-      reject('No words!');
-    }
-  }).then((words) => {
-    return words.map((word) => {
+  models.dictionary.findAll({
+    order: [
+      Sequelize.fn( 'RANDOM' ),
+    ],
+    limit: 30
+  }).then((res) => {
+    return rWord = res.map((val) => {
       return {
-        word: word,
-        definition: defineWord.define(word)
+        id: val.id,
+        word: val.word
       }
-    })
+    });
   }).then((wordsArr) => {
     res.json(wordsArr);
+  }).catch((err) => {
+    throw err;
   });
 });
 
+app.get('/defineWord', (req, res) => {
+  let word = req.query.word;
+  wd.getDef(word, 'en', null, (def) => {
+    res.json({def: def.definition});
+  })
+})
+
 app.post('/saveWordData', (req, res) => {
   let wordData = req.body;
-  console.log(req.body)
-
 });
 
 // models.sequelize.sync().then(() => {

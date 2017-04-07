@@ -14,11 +14,13 @@ let gameLogic = (function($, window, document) {
 
   return {
     words: [],
+    //get an array of random words from the api
     randomWord: () => {
       $.ajax({
         url: '/word',
         success: (res) => {
           metadata.res = res;
+          //loop over the array
           $(metadata.res).each((i, val) => {
             gameLogic.wordChoice(val);
             return false;
@@ -26,17 +28,20 @@ let gameLogic = (function($, window, document) {
         }
       });
     },
+    //this is where the HTML5 canvas API starts coming into play. when ever a new word is retrieved from the array, the canvas is redrawn
     wordChoice: (word) => {
       context.clearRect(0, 0, width, height);
       dHeight = 0;
       clearInterval(metadata.slideDown);
       gameLogic.newWord(word);
     },
+    //render the word to canvas, attach the key press so that the browser is listening for the correct key press, and add it to the array of words that the user has seen
     newWord: (word) => {
       gameLogic.activateWord(word.word);
       gameLogic.attachKeyPress(word.word);
       gameLogic.wordsSeen(word);
     },
+    //the main part of the game action. i'm using the setInterval function to redraw the word every 20 seconds. i start by erasing the canvas, then i will either redraw the word if it hasnt hit the bottom of the screen, or i will detach all event listeners, clear the interval, and show the user their gameplay stats.
     activateWord: (activated) => {
       context.font="20px Arial";
       context.fillStyle = "#000000";
@@ -58,12 +63,12 @@ let gameLogic = (function($, window, document) {
           gameLogic.saveWordData(gameLogic.words);
 
           $(".definition").click(function() {
-            var def = $(this).attr('data-definition');
+            var index = $(this).attr('data-definition');
             $(".wordDefinition").empty();
-            $(".wordDefinition").prepend(`<div> Word: ${gameLogic.words[def].word}  <br /> ${gameLogic.words[def].definition.definitions[0]}</div>`);
+            $(".wordDefinition").prepend(`<div> <h2>${gameLogic.words[index].word}</h2> ${gameLogic.words[index].def}</div>`);
           });
 
-          $(".restart").html("<button class='restartGame'>Restart</button>");
+          $(".restart").html("<button class='restartGame button-primary'>Restart</button>");
           $(".restartGame").click(function(){
             gameLogic.restart();
           });
@@ -71,6 +76,7 @@ let gameLogic = (function($, window, document) {
       }, 20);
       metadata.j++
     },
+    //this function listens for the correct key press. after each key press, we check if the word has been completed.
     attachKeyPress: (word) => {
       let i = 0;
       $('body').keypress((e) => {
@@ -84,6 +90,7 @@ let gameLogic = (function($, window, document) {
     wordsSeen: (word) => {
       gameLogic.words.push(word);
     },
+    //if the word if done, then get calculate the total time and then get the next word.
     checkForCompletion: (i, word) => {
       if (i === word.length) {
         $("#lettersTyped").empty();
@@ -92,9 +99,13 @@ let gameLogic = (function($, window, document) {
         gameLogic.words[metadata.wordcount].totalTime = totalTime;
         metadata.wordcount++
         let nextWord = metadata.res[metadata.wordcount];
+
+        db.wordDefinition(word, metadata.wordcount - 1);
+
         gameLogic.wordChoice(nextWord);
       }
     },
+    //if the user presses the button to do another game, then everything is reset and randomword is called.
     restart: () => {
       dHeight = 0;
       metadata.j = 0;
@@ -107,6 +118,7 @@ let gameLogic = (function($, window, document) {
       metadata.wordcount = 0;
       gameLogic.randomWord();
     },
+    //save the word data to the db
     saveWordData: (wordData) => {
       db.saveRound(wordData);
     }
