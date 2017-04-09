@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const session = require('express-session');
+const ip = require('request-ip');
 const os = require('os');
 const bp = require('body-parser');
 const wd = require('word-definition');
@@ -25,7 +26,10 @@ app.use(bp.json());
 
 app.get('/', (req, res) => {
   models.game_session.build({
-    sid: req.sessionID
+    sid: req.sessionID,
+    ip: ip.getClientIp(req) || 'IP NOT DETECTED',
+    os: os.type() || 'OS NOT DETECTED',
+    times_played: 1
   }).save().then((data) => {
     let options = {
       "root": __dirname,
@@ -39,7 +43,7 @@ app.get('/', (req, res) => {
       }
     });
   }).catch((e) => {
-    res.send(`Unfortunately, Typefall has fallen- please check back later!`);
+    res.send(`Unfortunately, Typefall has fallen- please check back later! Error code: ${e}`);
   });
 });
 

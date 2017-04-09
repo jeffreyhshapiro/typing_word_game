@@ -75,6 +75,7 @@ let gameLogic = (function($, window, document) {
 
           $(".restart").html("<button class='restartGame button-primary'>Restart</button>");
           $(".restartGame").click(function(){
+            //ajax here to update appropriate sid row times_played column
             gameLogic.restart();
           });
         }
