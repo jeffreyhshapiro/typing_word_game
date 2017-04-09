@@ -17,7 +17,8 @@
     "nodemon": "^1.11.0",
     "pg": "^6.1.2",
     "request-ip": "^2.0.1",
-    "sequelize": "^3.30.2"
+    "sequelize": "^3.30.2",
+    "word-definition": "^2.1.6"
   },
   "devDependencies": {
     "morgan": "^1.8.1"

@@ -75,8 +75,17 @@ let gameLogic = (function($, window, document) {
 
           $(".restart").html("<button class='restartGame button-primary'>Restart</button>");
           $(".restartGame").click(function(){
-            //ajax here to update appropriate sid row times_played column
-            gameLogic.restart();
+            $.ajax({
+              type: "GET",
+              url: `/replay?id=${gameLogic.id}`,
+              success: (res) => {
+                if (res.success === true) {
+                  gameLogic.restart();
+                } else {
+                  $(".restart").prepend(`An error has occured, please try again later`)
+                }
+              }
+            });
           });
         }
       }, 20);
