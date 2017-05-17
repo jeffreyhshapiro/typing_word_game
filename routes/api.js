@@ -24,7 +24,6 @@ router.get('/', (req, res) => {
   }).save().then((data) => {
     dataHandler.setCache('sessionID', data.id);
     res.sendFile(process.cwd() + '/index.html', (err) => {
-      console.log(err)
       if (err) {
         res.send(err)
       }
