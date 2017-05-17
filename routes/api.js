@@ -57,7 +57,7 @@ router.get('/gameSessionInfo', (req, res) => {
 });
 
 router.get('/replay', (req, res) => {
-  //this is a promise in a promise. not the best way to do this, but it works for now
+  //TODO this is a promise in a promise. not the best way to do this, but it works for now
   let id = req.query.id;
 
   models.game_session.find({
@@ -65,7 +65,9 @@ router.get('/replay', (req, res) => {
       id: id
     }
   }).then((data) => {
+
     times_played = data.times_played + 1;
+
     models.game_session.update({
       times_played: times_played
     }, {
@@ -77,6 +79,7 @@ router.get('/replay', (req, res) => {
     }).catch((e) => {
       res.json({failure: e})
     });
+    
   });
 });
 
