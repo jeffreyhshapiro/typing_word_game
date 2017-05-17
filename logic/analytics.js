@@ -13,10 +13,9 @@ let analytics = (function($){
       $.ajax({
         type: "POST",
         data: typoInfo,
-        url: "/typo",
-        success: () => {
-          console.log('ayo')
-        }
+        url: "/typo"
+      }).then((res) => {
+        console.log(res)
       })
     }
   }

@@ -6,7 +6,7 @@ let main = (function($, window, document){
       type: "GET",
       url: "/gameSessionInfo",
       success: (res) => {
-        gameLogic.id = res.id
+        gameLogic.sid = res.id
       }
     })
     $('.startGame').hide();

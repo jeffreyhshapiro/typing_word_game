@@ -60,6 +60,8 @@ let gameLogic = (function($, window, document) {
 
           gameLogic.saveWordData(gameLogic.words);
 
+          analytics.typo(metadata.typo);
+
           $(".definition").click(function() {
             var index = $(this).attr('data-definition');
             $(".wordDefinition").empty();
@@ -70,7 +72,7 @@ let gameLogic = (function($, window, document) {
           $(".restartGame").click(function(){
             $.ajax({
               type: "GET",
-              url: `/replay?id=${gameLogic.id}`,
+              url: `/replay?id=${gameLogic.sid}`,
               success: (res) => {
                 if (res.success === true) {
                   gameLogic.restart();
@@ -100,7 +102,7 @@ let gameLogic = (function($, window, document) {
             wordNumber: gameLogic.words.length,
             word_id: gameLogic.words[metadata.wordcount].id
           }
-          analytics.typo(typoInfo);
+          metadata.typo.push(typoInfo);
         }
       });
     },

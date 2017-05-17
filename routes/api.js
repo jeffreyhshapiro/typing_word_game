@@ -19,9 +19,10 @@ router.get('/', (req, res) => {
     sid: req.sessionID,
     ip: ip.getClientIp(req) || 'IP NOT DETECTED',
     os: os.type() || 'OS NOT DETECTED',
-    times_played: 1
+    times_played: 0
   }).save().then((data) => {
     dataHandler.setCache('sessionID', data.id);
+    dataHandler.setCache('timesPlayed', data.times_played);
     res.sendFile(process.cwd() + '/index.html', (err) => {
       if (err) {
         res.send(err)
@@ -53,33 +54,34 @@ router.get('/word', (req, res) => {
 });
 
 router.get('/gameSessionInfo', (req, res) => {
-  res.json({id: dataHandler.getCache('sessionID')})
+
+  models.game_session.update({
+    times_played: dataHandler.getCache('timesPlayed') + 1
+  }, {
+    where: {
+      id: dataHandler.getCache('sessionID')
+    }
+  }).then(() => {
+    res.json({id: dataHandler.getCache('sessionID')})
+  }).catch((e) => {
+    res.json({failure: e})
+  });
 });
 
 router.get('/replay', (req, res) => {
   //TODO this is a promise in a promise. not the best way to do this, but it works for now
   let id = req.query.id;
 
-  models.game_session.find({
+  models.game_session.update({
+    times_played: dataHandler.getCache('timesPlayed') + 1
+  }, {
     where: {
       id: id
     }
   }).then((data) => {
-
-    times_played = data.times_played + 1;
-
-    models.game_session.update({
-      times_played: times_played
-    }, {
-      where: {
-        id: id
-      }
-    }).then((data) => {
-      res.json({success: true})
-    }).catch((e) => {
-      res.json({failure: e})
-    });
-    
+    res.json({success: true});
+  }).catch((e) => {
+    res.json({failure: e});
   });
 });
 
