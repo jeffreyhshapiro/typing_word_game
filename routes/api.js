@@ -23,9 +23,6 @@ router.get('/', (req, res) => {
     times_played: 1
   }).save().then((data) => {
     dataHandler.setCache('sessionID', data.id);
-    // let options = {
-    //   "root": __dirname,
-    // }
     res.sendFile(process.cwd() + '/index.html', (err) => {
       console.log(err)
       if (err) {
