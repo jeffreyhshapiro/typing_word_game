@@ -21,6 +21,3 @@ module.exports = (sequelize, DataTypes) => {
     }
   });
 }
-
-//TODO add a column that says how many games are played in a session
-//TODO add a column that specifies what OS the user is accessing the game from (node OS module)
